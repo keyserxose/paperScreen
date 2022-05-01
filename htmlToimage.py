@@ -10,6 +10,7 @@ hti.screenshot(url='http://localhost:8080/image.png', save_as='status.png', size
 # Convert to grayscale
 os.system('convert status.png -type GrayScale -depth 8 -colors 256 status.png')
 
+# Permissions
 os.system('chmod 777 status.png')
 
 # Copy image to apache dir
