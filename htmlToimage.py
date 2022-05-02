@@ -159,15 +159,12 @@ os.system('chmod -R 777 paper')
 
 os.system('cp -p -R paper /srv/http/')
 
-# Take the screenshot
-#hti.screenshot(url='http://localhost:8080/paper/index.html', save_as='status.png', size=(600, 800))
+def screenshot():
+    hti.screenshot(url='http://localhost:8080/paper/index.html', save_as='status.png', size=(600, 800))
+    os.system('convert status.png -type GrayScale -depth 8 -colors 256 status.png')
+    os.system('chmod 777 status.png')
+    os.system('cp -p status.png /srv/http/status.png')
 
-# Convert to grayscale
-os.system('convert status.png -type GrayScale -depth 8 -colors 256 status.png')
 
-# Permissions
-os.system('chmod 777 status.png')
-
-# Copy image to apache dir
-os.system('cp -p status.png /srv/http/status.png')
+#screenshot()
 
