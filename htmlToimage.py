@@ -45,14 +45,18 @@ def getJson():
 getJson()
 
 
-# This gets the weather description
-def getWeatherDesc():
+def getSunriseSunset():
     global sunrise
     sunrise = jsonData[0]['prediccion']['dia'][0]['orto']
     global sunset
     sunset = jsonData[0]['prediccion']['dia'][0]['ocaso']
     print('Sunrise: '+sunrise)
     print('Sunset: '+sunset)
+
+getSunriseSunset()
+
+# This gets the weather description
+def getWeatherDesc():
     # This one below looks like it's working! - We select the first day or current day, and then itereate with i through all the periods and descriptions below estadoCielo
     for i in range(len(jsonData[0]['prediccion']['dia'][0]['estadoCielo'])):
         #print(jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['periodo'])
