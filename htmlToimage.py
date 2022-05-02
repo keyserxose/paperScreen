@@ -6,9 +6,7 @@ import json
 import requests
 from datetime import date
 from datetime import datetime
-#import argparse
 import configparser
-
 hti = Html2Image()
 
 # Reading from the current path
@@ -22,8 +20,7 @@ config = configparser.ConfigParser()
 config.read(config_file)
 apiKey = config['DEFAULT']['ApiKey']
 
-
-# This gets the time
+# This gets the system time
 now = datetime.now()
 hourFormated = str(now.hour)
 print('This is the system hour: '+hourFormated)
