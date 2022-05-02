@@ -61,11 +61,16 @@ def getJsonTest():
         #print(jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['periodo'])
         #print(jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion'])
         if jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['periodo'] == hourFormated:
-            print('The time is '+hourFormated)
+            print('The time is: '+hourFormated)
             print('The weather is: '+jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion'])
             global weatherDesc
             weatherDesc = jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion']
-            print(weatherDesc)
+            #print(weatherDesc)
+        
+        elif jsonData[0]['prediccion']['dia'][0]['temperatura'][i]['periodo'] == hourFormated:
+            global temp
+            temp = jsonData[0]['prediccion']['dia'][0]['temperatura'][i]['value']
+            print('The temperature is: '+temp)
 
 getJsonTest()
 
@@ -101,9 +106,6 @@ showIcon()
 # 14 - Nuboso
 
 
-
-
-
 def jsonNewData():
     global jsonDate
     jsonDate = jsonData[0]['elaborado']
@@ -118,7 +120,6 @@ jsonNewData()
 
 def getJson():
     url = "https://opendata.aemet.es/opendata/api/observacion/convencional/datos/estacion/3195/"
-    #url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/28079/"
     querystring = {"api_key":apiKey}
     headers = {'cache-control': "no-cache"}
     response = requests.request("GET", url, headers=headers, params=querystring)
@@ -139,7 +140,7 @@ def processJson():
     jsonTemp = jsonData[-1]['ta']
     print('Temp: '+str(jsonTemp))
 
-processJson()
+#processJson()
 
 # This generates the index.html
 
@@ -156,7 +157,7 @@ def generateHtml():
     <img src=weather/"""+weatherIcon+""" alt='weather-icon' width = "100" height = "100">
     <p>Date: """+str(jsonDate)+"""</p>
     <p>City: """+str(jsonCity)+"""</p>
-    <p>Temp: """+str(jsonTemp)+"""º C</p>
+    <p>Temp: """+str(temp)+"""º C</p>
     </body>
     </html>
     """
