@@ -77,7 +77,6 @@ def getTemp():
 
 getTemp()
 
-
 def generateJSONFile():
     with open('weatherdata.json', 'w') as outfile:
         json.dump(jsonData, outfile, indent=2)
@@ -120,27 +119,7 @@ def jsonNewData():
 
 jsonNewData()
 
-# This can be removed in the future
-
-def getJson():
-    url = "https://opendata.aemet.es/opendata/api/observacion/convencional/datos/estacion/3195/"
-    querystring = {"api_key":apiKey}
-    headers = {'cache-control': "no-cache"}
-    response = requests.request("GET", url, headers=headers, params=querystring)
-    #print(response.text)
-    request = requests.get(url, headers=headers, params=querystring)
-    data = request.json()
-    output = data['datos']
-    #print('This is your data endpoint: '+output)
-    jsonRequest = requests.get(output)
-    global jsonData
-    jsonData = jsonRequest.json()
-    #print(jsonData)
-
-getJson()
-
 # This generates the index.html
-
 def generateHtml():
     f = open('paper/index.html', 'w')
     html = """<html>
@@ -170,9 +149,11 @@ def generateHtml():
 
 generateHtml()
 
-os.system('chmod -R 777 paper')
+def folderPermissions():
+    os.system('chmod -R 777 paper')
+    os.system('cp -p -R paper /srv/http/')
 
-os.system('cp -p -R paper /srv/http/')
+folderPermissions()
 
 def screenshot():
     hti.screenshot(url='http://localhost:8080/paper/index.html', save_as='status.png', size=(600, 800))
@@ -181,5 +162,5 @@ def screenshot():
     os.system('cp -p status.png /srv/http/status.png')
 
 
-#screenshot()
+screenshot()
 
