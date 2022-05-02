@@ -26,11 +26,9 @@ apiKey = config['DEFAULT']['ApiKey']
 # This gets the time
 now = datetime.now()
 hourFormated = str(now.hour)
-print('This is the current hour: '+hourFormated)
+print('This is the system hour: '+hourFormated)
 
-# This is a test to get the weather
-
-def getJsonTest():
+def getJson():
     url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/28079/"
     querystring = {"api_key":apiKey}
     headers = {'cache-control': "no-cache"}
@@ -43,28 +41,44 @@ def getJsonTest():
     jsonRequest = requests.get(output)
     global jsonData
     jsonData = jsonRequest.json()
-    #print(jsonData)
+
+getJson()
+
+
+# This gets the weather description
+def getWeatherDesc():
+    global sunrise
+    sunrise = jsonData[0]['prediccion']['dia'][0]['orto']
+    global sunset
+    sunset = jsonData[0]['prediccion']['dia'][0]['ocaso']
+    print('Sunrise: '+sunrise)
+    print('Sunset: '+sunset)
     # This one below looks like it's working! - We select the first day or current day, and then itereate with i through all the periods and descriptions below estadoCielo
-    for i in range(len(jsonData[0]['prediccion']['dia'][0])):
+    for i in range(len(jsonData[0]['prediccion']['dia'][0]['estadoCielo'])):
+        #print(jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['periodo'])
         if jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['periodo'] == hourFormated:
-            print('The time is: '+hourFormated)
+            print('The API time is: '+hourFormated)
             print('The weather is: '+jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion'])
             global weatherDesc
             weatherDesc = jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion']
-            #print(weatherDesc)
-        
-        elif jsonData[0]['prediccion']['dia'][0]['temperatura'][i]['periodo'] == hourFormated:
+
+getWeatherDesc()
+
+def getTemp():
+    for i in range(len(jsonData[0]['prediccion']['dia'][0]['temperatura'])):
+        if jsonData[0]['prediccion']['dia'][0]['temperatura'][i]['periodo'] == hourFormated:
+            print('The temp is: '+jsonData[0]['prediccion']['dia'][0]['temperatura'][i]['value'])
             global temp
             temp = jsonData[0]['prediccion']['dia'][0]['temperatura'][i]['value']
-            print('The temperature is: '+temp)
 
-getJsonTest()
+getTemp()
 
-def generateJSON():
+
+def generateJSONFile():
     with open('weatherdata.json', 'w') as outfile:
         json.dump(jsonData, outfile, indent=2)
 
-generateJSON()
+generateJSONFile()
 
 def showIcon():
     global weatherIcon
@@ -121,13 +135,6 @@ def getJson():
 
 getJson()
 
-def processJson():
-    global jsonTemp
-    jsonTemp = jsonData[-1]['ta']
-    print('Temp: '+str(jsonTemp))
-
-#processJson()
-
 # This generates the index.html
 
 def generateHtml():
@@ -139,11 +146,15 @@ def generateHtml():
     <link rel= 'stylesheet' type='text/css' href='style.css'/>
     </head>
     <body>
-    <h2>This is a test</h2>
+    <h2>SMART PANEL</h2>
     <img src=weather/"""+weatherIcon+""" alt='weather-icon' width = "100" height = "100">
-    <p>Date: """+str(jsonDate)+"""</p>
+    <p>Date of report: """+str(jsonDate)+"""</p>
     <p>City: """+str(jsonCity)+"""</p>
     <p>Temp: """+str(temp)+"""º C</p>
+    <p>Sunrise: """+str(sunrise)+"""</p>
+    <img src=weather/sunrise.png alt='weather-icon' width = "100" height = "100">
+    <p>Sunset: """+str(sunset)+"""</p>
+    <img src=weather/sunset.png alt='weather-icon' width = "100" height = "100">
     </body>
     </html>
     """
