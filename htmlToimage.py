@@ -44,22 +44,8 @@ def getJsonTest():
     global jsonData
     jsonData = jsonRequest.json()
     #print(jsonData)
-    #print(jsonData[0]['prediccion']['dia'][0])
-    # Get data for today
-    #for i in range(len(jsonData)):
-    #    if jsonData[i]['prediccion']['dia'][0]['fecha'] == "2022-05-02T00:00:00":
-    #        date = jsonData[i]['prediccion']['dia'][0]['fecha']
-    #        print('Date: '+date)
-    #        periodo = jsonData[i]['prediccion']['dia'][0]['estadoCielo'][0]['periodo']
-    #        print('Periodo: '+periodo)
-    #        description = jsonData[i]['prediccion']['dia'][0]['estadoCielo'][0]['descripcion']
-    #        print('Descripcion: '+description)
-
     # This one below looks like it's working! - We select the first day or current day, and then itereate with i through all the periods and descriptions below estadoCielo
     for i in range(len(jsonData[0]['prediccion']['dia'][0])):
-        #print('This is a test')
-        #print(jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['periodo'])
-        #print(jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion'])
         if jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['periodo'] == hourFormated:
             print('The time is: '+hourFormated)
             print('The weather is: '+jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion'])
