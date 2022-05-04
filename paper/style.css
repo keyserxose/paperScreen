@@ -2,3 +2,16 @@ body{
 
     background-color: #ffffff;
 }
+
+#temp{
+
+    font-size: 5em;
+    margin-left: 20px;
+
+}
+
+
+#left{
+
+    margin-left: 10px;
+}
