@@ -13,7 +13,7 @@ hti = Html2Image()
 path = __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-config_file = path+'/htmlToimage.conf'
+config_file = path+'/paper.conf'
 
 # Parsing config file
 config = configparser.ConfigParser()
