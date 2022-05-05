@@ -89,9 +89,15 @@ def showIcon():
     elif weatherDesc == 'Nubes altas' or weatherDesc == 'Cubierto' or weatherDesc == 'Muy nuboso' or weatherDesc == 'Nuboso':
         weatherIcon = 'cloud.png'
     elif weatherDesc == 'Poco nuboso' or weatherDesc == 'Intervalos nubosos':
-        weatherIcon = 'cloudy.png'
+        if 6 <= now.hour <= 22:
+            weatherIcon = 'cloudy-night.png'
+        elif 22 <= now.hour <= 6:
+            weatherIcon = 'cloudy.png'
     elif weatherDesc == 'Despejado':
-        weatherIcon = 'sun.png'
+        if 6 <= now.hour <= 22:
+            weatherIcon = 'full-moon.png'
+        elif 22 <= now.hour <= 6:
+            weatherIcon = 'sun.png'
     else:
         weatherIcon = 'ufo.png'
         pass
@@ -138,8 +144,6 @@ def generateHtml():
     
     # close the file
     f.close()
-
-
 
 
 generateHtml()
