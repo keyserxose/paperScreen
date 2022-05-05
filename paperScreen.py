@@ -125,7 +125,6 @@ def generateHtml():
     <link rel= 'stylesheet' type='text/css' href='style.css'/>
     </head>
     <body>
-    <h2>SMART PANEL</h2>
     <img src=weather/"""+weatherIcon+""" alt='weather-icon' width = "60" height = "60">
     <a id='temp'>"""+str(temp+'º')+"""</a>
     <p>"""+weatherDesc+"""</p>
