@@ -28,7 +28,13 @@ def getTime():
     hour = now.hour
     global hourStr
     hourStr = str(hour)
+    global currentTime
+    currentTime = now.strftime("%H:%M")
+    print('Current Time: '+currentTime)
     print('This is the system hour: '+hourStr)
+
+
+
 
 getTime()
 
@@ -149,19 +155,19 @@ def generateHtml():
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200&display=swap" rel="stylesheet">
     </head>
     <body>
-    <img src=weather/"""+weatherIcon+""" alt='weather-icon' width = "60" height = "60">
+    <img id='icon' src=weather/"""+weatherIcon+""" alt='weather-icon' width = "70" height = "70">
     <a id='temp'>"""+str(temp+'º')+"""</a>
-    <a id='report-date'>"""+str(jsonDate)+"""</a>
+    <a id='time'>"""+currentTime+"""</a>
     <p></p>
-    <a id='font'>&nbsp;"""+str(jsonCity)+"""&nbsp;</a>
-    <a id='font'>|</a>
-    <a id='font'>&nbsp;"""+weatherDesc+"""</a>
+    <a id='text'>&nbsp;"""+weatherDesc+"""&nbsp;</a>
+    <a id='text'>|</a>
+    <a id='text'>&nbsp;"""+str(jsonCity)+"""&nbsp;</a>
     <p></p>
     <img src=weather/sunrise.png alt='weather-icon' width = "70" height = "70">
     <img id='left' src=weather/sunset.png alt='weather-icon' width = "70" height = "70">
     <p></p>
     <a>&nbsp;&nbsp;"""+str(sunrise)+"""</a>
-    <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""+str(sunset)+"""</a>
+    <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""+str(sunset)+"""</a>
     </body>
     </html>
     """
@@ -172,7 +178,38 @@ def generateHtml():
     f.close()
 
 
-generateHtml()
+#generateHtml()
+
+def generateHtmlSimple():
+    f = open('paper/index.html', 'w')
+    html = """<html>
+    <head>
+    <meta charset='utf-8'/>
+    <title>Smart Panel</title>
+    <link rel= 'stylesheet' type='text/css' href='style.css'/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200&display=swap" rel="stylesheet">
+    </head>
+    <body>
+    <img id='icon' src=weather/"""+weatherIcon+""" alt='weather-icon' width = "70" height = "70">
+    <a id='temp'>"""+str(temp+'º')+"""</a>
+    <a id='time'>"""+currentTime+"""</a>
+    <p></p>
+    <a id='text'>&nbsp;"""+weatherDesc+"""&nbsp;</a>
+    <a id='text'>|</a>
+    <a id='text'>&nbsp;"""+str(jsonCity)+"""&nbsp;</a>
+    <p></p>
+    </body>
+    </html>
+    """
+    # writing the code into the file
+    f.write(html)
+    
+    # close the file
+    f.close()
+
+generateHtmlSimple()
 
 def folderPermissions():
     os.system('chmod -R 777 paper')
