@@ -42,9 +42,13 @@ def getJson():
 
 getJson()
 
-#print('This is the time from the API: '+jsonData[0]['prediccion']['dia'][1]['fecha'])
+print('This is the date from the API: '+jsonData[0]['prediccion']['dia'][0]['fecha'])
 
-#print(jsonData[0]['prediccion']['dia'][0]['estadoCielo'])
+def getToday():
+    global jsonToday
+    jsonToday = jsonData[0]['prediccion']['dia'][0]
+
+getToday()
 
 def getSunriseSunset():
     global sunrise
@@ -55,6 +59,21 @@ def getSunriseSunset():
     print('Sunset: '+sunset)
 
 getSunriseSunset()
+
+# THIS IS A TEST
+
+def getWeatherDescTest():
+    # This one below looks like it's working! - We select the first day or current day, and then itereate with i through all the periods and descriptions below estadoCielo
+    for i in range(len(jsonToday)):
+        #print(jsonData[0]['prediccion']['dia'][0])
+        if jsonToday['estadoCielo'][i]['periodo'] == hourFormated:
+            print('The API time is: '+hourFormated)
+            print('The weather is: '+jsonToday['estadoCielo'][i]['descripcion'])
+            global weatherDesc
+            weatherDesc = jsonToday['estadoCielo'][i]['descripcion']
+            print(weatherDesc)
+
+getWeatherDescTest()
 
 # This gets the weather description
 def getWeatherDesc():
@@ -68,7 +87,7 @@ def getWeatherDesc():
             weatherDesc = jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion']
             print(weatherDesc)
 
-getWeatherDesc()
+#getWeatherDesc()
 
 def getTemp():
     for i in range(len(jsonData[0]['prediccion']['dia'][0]['temperatura'])):
@@ -167,5 +186,5 @@ def screenshot():
     os.system('chmod 777 status.png')
     os.system('cp -p status.png /srv/http/status.png')
 
+#screenshot()
 
-screenshot()
