@@ -52,9 +52,9 @@ getToday()
 
 def getSunriseSunset():
     global sunrise
-    sunrise = jsonData[0]['prediccion']['dia'][0]['orto']
+    sunrise = jsonToday['orto']
     global sunset
-    sunset = jsonData[0]['prediccion']['dia'][0]['ocaso']
+    sunset = jsonToday['ocaso']
     print('Sunrise: '+sunrise)
     print('Sunset: '+sunset)
 
@@ -62,39 +62,28 @@ getSunriseSunset()
 
 # THIS IS A TEST
 
-def getWeatherDescTest():
+# This gets the weather description
+def getWeatherDesc():
     # This one below looks like it's working! - We select the first day or current day, and then itereate with i through all the periods and descriptions below estadoCielo
     for i in range(len(jsonToday)):
         #print(jsonData[0]['prediccion']['dia'][0])
         if jsonToday['estadoCielo'][i]['periodo'] == hourFormated:
             print('The API time is: '+hourFormated)
-            print('The weather is: '+jsonToday['estadoCielo'][i]['descripcion'])
             global weatherDesc
             weatherDesc = jsonToday['estadoCielo'][i]['descripcion']
+            print('The weather is: '+weatherDesc)
             print(weatherDesc)
 
-getWeatherDescTest()
+getWeatherDesc()
 
-# This gets the weather description
-def getWeatherDesc():
-    # This one below looks like it's working! - We select the first day or current day, and then itereate with i through all the periods and descriptions below estadoCielo
-    for i in range(len(jsonData[0]['prediccion']['dia'][0]['estadoCielo'])):
-        #print(jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['periodo'])
-        if jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['periodo'] == hourFormated:
-            print('The API time is: '+hourFormated)
-            print('The weather is: '+jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion'])
-            global weatherDesc
-            weatherDesc = jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion']
-            print(weatherDesc)
-
-#getWeatherDesc()
+#print(jsonData[0]['prediccion']['dia'][0]['temperatura'])
 
 def getTemp():
-    for i in range(len(jsonData[0]['prediccion']['dia'][0]['temperatura'])):
-        if jsonData[0]['prediccion']['dia'][0]['temperatura'][i]['periodo'] == hourFormated:
-            print('The temp is: '+jsonData[0]['prediccion']['dia'][0]['temperatura'][i]['value'])
+    for i in range(len(jsonToday)):
+        if jsonToday['temperatura'][i]['periodo'] == hourFormated:
             global temp
-            temp = jsonData[0]['prediccion']['dia'][0]['temperatura'][i]['value']
+            temp = jsonToday['temperatura'][i]['value']
+            print('The temp is: '+temp)
 
 getTemp()
 
@@ -129,7 +118,7 @@ def showIcon():
 showIcon()
 
 
-def jsonNewData():
+def jsonMainDetails():
     global jsonDate
     jsonDate = jsonData[0]['elaborado']
     print('Date of report: '+jsonDate)
@@ -137,7 +126,7 @@ def jsonNewData():
     jsonCity = jsonData[0]['nombre']
     print('City: '+jsonCity)
 
-jsonNewData()
+jsonMainDetails()
 
 # This generates the index.html
 def generateHtml():
