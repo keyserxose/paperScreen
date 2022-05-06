@@ -7,7 +7,8 @@ import requests
 from datetime import date
 from datetime import datetime
 import configparser
-hti = Html2Image()
+import imgkit
+hti = Html2Image(custom_flags=['--quiet'])
 
 # Reading from the current path
 path = __location__ = os.path.realpath(
@@ -41,6 +42,9 @@ def getJson():
 
 getJson()
 
+#print('This is the time from the API: '+jsonData[0]['prediccion']['dia'][1]['fecha'])
+
+#print(jsonData[0]['prediccion']['dia'][0]['estadoCielo'])
 
 def getSunriseSunset():
     global sunrise
@@ -62,6 +66,7 @@ def getWeatherDesc():
             print('The weather is: '+jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion'])
             global weatherDesc
             weatherDesc = jsonData[0]['prediccion']['dia'][0]['estadoCielo'][i]['descripcion']
+            print(weatherDesc)
 
 getWeatherDesc()
 
@@ -95,9 +100,9 @@ def showIcon():
             weatherIcon = 'cloudy.png'
     elif weatherDesc == 'Despejado':
         if 6 <= now.hour <= 22:
-            weatherIcon = 'full-moon.png'
-        elif 22 <= now.hour <= 6:
             weatherIcon = 'sun.png'
+        elif 22 <= now.hour <= 6:
+            weatherIcon = 'full-moon.png'
     else:
         weatherIcon = 'ufo.png'
         pass
@@ -127,14 +132,17 @@ def generateHtml():
     <body>
     <img src=weather/"""+weatherIcon+""" alt='weather-icon' width = "60" height = "60">
     <a id='temp'>"""+str(temp+'º')+"""</a>
-    <p>"""+weatherDesc+"""</p>
+    <p></p>
+    <a>&nbsp;"""+str(jsonCity)+"""&nbsp;</a>
+    <a>|</a>
+    <a>&nbsp;"""+weatherDesc+"""</a>
+    <p></p>
     <img src=weather/sunrise.png alt='weather-icon' width = "50" height = "50">
     <img id='left' src=weather/sunset.png alt='weather-icon' width = "50" height = "50">
     <p></p>
     <a>&nbsp;&nbsp;"""+str(sunrise)+"""</a>
     <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""+str(sunset)+"""</a>
     <p>Date of report: """+str(jsonDate)+"""</p>
-    <p>City: """+str(jsonCity)+"""</p>
     </body>
     </html>
     """
@@ -161,4 +169,3 @@ def screenshot():
 
 
 screenshot()
-
