@@ -22,9 +22,15 @@ config.read(config_file)
 apiKey = config['DEFAULT']['ApiKey']
 
 # This gets the system time
-now = datetime.now()
-hourFormated = str(now.hour+1)
-print('This is the system hour: '+hourFormated)
+def getTime():
+    now = datetime.now()
+    global hour
+    hour = now.hour
+    global hourStr
+    hourStr = str(hour)
+    print('This is the system hour: '+hourStr)
+
+getTime()
 
 def getJson():
     url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/28079/"
@@ -44,11 +50,42 @@ getJson()
 
 print('This is the date from the API: '+jsonData[0]['prediccion']['dia'][0]['fecha'])
 
+def generateJSONFile():
+    with open('weatherdata.json', 'w') as outfile:
+        json.dump(jsonData, outfile, indent=2)
+
+generateJSONFile()
+
 def getToday():
     global jsonToday
     jsonToday = jsonData[0]['prediccion']['dia'][0]
+    #print(jsonToday)
 
 getToday()
+
+#print(jsonToday['estadoCielo'][0]['descripcion'])
+
+def getWeatherDesc(time):
+    for i in range(len(jsonToday['estadoCielo'])):
+        #print(jsonToday['estadoCielo'][i]['periodo'])
+        if jsonToday['estadoCielo'][i]['periodo'] == str(hour+time):
+            print('The API time is: '+hourStr)
+            global weatherDesc
+            weatherDesc = jsonToday['estadoCielo'][i]['descripcion']
+            print('The weather is: '+weatherDesc)
+            #print(weatherDesc)
+
+getWeatherDesc(0)
+
+
+def getTemp():
+    for i in range(len(jsonToday['temperatura'])):
+        if jsonToday['temperatura'][i]['periodo'] == hourStr:
+            global temp
+            temp = jsonToday['temperatura'][i]['value']
+            print('The temp is: '+temp)
+
+getTemp()
 
 def getSunriseSunset():
     global sunrise
@@ -59,33 +96,6 @@ def getSunriseSunset():
     print('Sunset: '+sunset)
 
 getSunriseSunset()
-
-# THIS IS A TEST
-
-# This gets the weather description
-def getWeatherDesc():
-    # This one below looks like it's working! - We select the first day or current day, and then itereate with i through all the periods and descriptions below estadoCielo
-    for i in range(len(jsonToday)):
-        #print(jsonData[0]['prediccion']['dia'][0])
-        if jsonToday['estadoCielo'][i]['periodo'] == hourFormated:
-            print('The API time is: '+hourFormated)
-            global weatherDesc
-            weatherDesc = jsonToday['estadoCielo'][i]['descripcion']
-            print('The weather is: '+weatherDesc)
-            print(weatherDesc)
-
-getWeatherDesc()
-
-#print(jsonData[0]['prediccion']['dia'][0]['temperatura'])
-
-def getTemp():
-    for i in range(len(jsonToday)):
-        if jsonToday['temperatura'][i]['periodo'] == hourFormated:
-            global temp
-            temp = jsonToday['temperatura'][i]['value']
-            print('The temp is: '+temp)
-
-getTemp()
 
 def generateJSONFile():
     with open('weatherdata.json', 'w') as outfile:
@@ -102,21 +112,20 @@ def showIcon():
     elif weatherDesc == 'Nubes altas' or weatherDesc == 'Cubierto' or weatherDesc == 'Muy nuboso' or weatherDesc == 'Nuboso':
         weatherIcon = 'cloud.png'
     elif weatherDesc == 'Poco nuboso' or weatherDesc == 'Intervalos nubosos':
-        if 6 <= now.hour <= 22:
-            weatherIcon = 'cloudy-night.png'
-        elif 22 <= now.hour <= 6:
+        if 6 <= hour <= 21:
             weatherIcon = 'cloudy.png'
+        else:
+            weatherIcon = 'cloudy-night.png'
     elif weatherDesc == 'Despejado':
-        if 6 <= now.hour <= 22:
+        if 6 <= hour <= 21:
             weatherIcon = 'sun.png'
-        elif 22 <= now.hour <= 6:
+        else:
             weatherIcon = 'full-moon.png'
     else:
         weatherIcon = 'ufo.png'
         pass
 
 showIcon()
-
 
 def jsonMainDetails():
     global jsonDate
@@ -128,29 +137,31 @@ def jsonMainDetails():
 
 jsonMainDetails()
 
-# This generates the index.html
 def generateHtml():
     f = open('paper/index.html', 'w')
     html = """<html>
     <head>
     <meta charset='utf-8'/>
-    <title>Title</title>
+    <title>Smart Panel</title>
     <link rel= 'stylesheet' type='text/css' href='style.css'/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200&display=swap" rel="stylesheet">
     </head>
     <body>
     <img src=weather/"""+weatherIcon+""" alt='weather-icon' width = "60" height = "60">
     <a id='temp'>"""+str(temp+'º')+"""</a>
+    <a id='report-date'>"""+str(jsonDate)+"""</a>
     <p></p>
-    <a>&nbsp;"""+str(jsonCity)+"""&nbsp;</a>
-    <a>|</a>
-    <a>&nbsp;"""+weatherDesc+"""</a>
+    <a id='font'>&nbsp;"""+str(jsonCity)+"""&nbsp;</a>
+    <a id='font'>|</a>
+    <a id='font'>&nbsp;"""+weatherDesc+"""</a>
     <p></p>
-    <img src=weather/sunrise.png alt='weather-icon' width = "50" height = "50">
-    <img id='left' src=weather/sunset.png alt='weather-icon' width = "50" height = "50">
+    <img src=weather/sunrise.png alt='weather-icon' width = "70" height = "70">
+    <img id='left' src=weather/sunset.png alt='weather-icon' width = "70" height = "70">
     <p></p>
     <a>&nbsp;&nbsp;"""+str(sunrise)+"""</a>
     <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""+str(sunset)+"""</a>
-    <p>Date of report: """+str(jsonDate)+"""</p>
     </body>
     </html>
     """
@@ -175,5 +186,5 @@ def screenshot():
     os.system('chmod 777 status.png')
     os.system('cp -p status.png /srv/http/status.png')
 
-#screenshot()
+screenshot()
 

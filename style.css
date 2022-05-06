@@ -1,14 +1,13 @@
 body{
 
     background-color: #ffffff;
-    font-family: 'Source Sans Pro', sans-serif;
 }
 
 #temp{
 
     font-size: 5em;
     margin-left: 20px;
-    
+    padding-top: 20px;
 
 }
 
@@ -20,13 +19,7 @@ body{
 
 #report-date{
 
-    font-size: 2em;
     position: fixed;
     margin-top: 5px;
-    margin-left: 20px;
-}
-
-#font{
-
-    font-size:30px;
+    padding-left: 160px;
 }
