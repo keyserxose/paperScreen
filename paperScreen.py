@@ -26,17 +26,43 @@ def getTime():
     now = datetime.now()
     global hour
     hour = now.hour
+    print(hour)
     global hourStr
     hourStr = str(hour)
+    global currentTimeHour
+    currentTimeHour = now.strftime("%H")
+    print(currentTimeHour)
     global currentTime
     currentTime = now.strftime("%H:%M")
     print('Current Time: '+currentTime)
     print('This is the system hour: '+hourStr)
 
 
-
-
 getTime()
+
+#hour = 10
+
+#time = 0
+
+def convertTime():
+    if 0 <= hour <= 9:
+        time = 0
+        newTime = time+hour
+        global newTimeConverted
+        newTimeConverted = '0'+str(newTime)
+        print('Its a single digit hour')
+        print('This is newtime: '+newTimeConverted)
+    else:
+        newTime = time+hour
+        newTimeConverted = str(newTime)
+        print('Its a double digit hour')
+        print('This is newtime: '+newTimeConverted)
+
+
+
+# City Codes
+# A Coruña - 15030
+# Madrid - 28079
 
 def getJson():
     url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/28079/"
@@ -54,7 +80,7 @@ def getJson():
 
 getJson()
 
-print('This is the date from the API: '+jsonData[0]['prediccion']['dia'][0]['fecha'])
+print('This is the date from the API: '+jsonData[0]['prediccion']['dia'][1]['fecha'])
 
 def generateJSONFile():
     with open('weatherdata.json', 'w') as outfile:
@@ -64,17 +90,19 @@ generateJSONFile()
 
 def getToday():
     global jsonToday
-    jsonToday = jsonData[0]['prediccion']['dia'][0]
-    #print(jsonToday)
+    jsonToday = jsonData[0]['prediccion']['dia'][1]
+    print(jsonToday['fecha'])
 
 getToday()
 
 #print(jsonToday['estadoCielo'][0]['descripcion'])
 
+
 def getWeatherDesc(time):
+    convertTime()
     for i in range(len(jsonToday['estadoCielo'])):
         #print(jsonToday['estadoCielo'][i]['periodo'])
-        if jsonToday['estadoCielo'][i]['periodo'] == str(hour+time):
+        if jsonToday['estadoCielo'][i]['periodo'] == newTimeConverted:
             print('The API time is: '+hourStr)
             global weatherDesc
             weatherDesc = jsonToday['estadoCielo'][i]['descripcion']
@@ -86,7 +114,7 @@ getWeatherDesc(0)
 
 def getTemp():
     for i in range(len(jsonToday['temperatura'])):
-        if jsonToday['temperatura'][i]['periodo'] == hourStr:
+        if jsonToday['temperatura'][i]['periodo'] == newTimeConverted:
             global temp
             temp = jsonToday['temperatura'][i]['value']
             print('The temp is: '+temp)
