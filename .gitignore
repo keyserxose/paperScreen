@@ -131,4 +131,5 @@ dmypy.json
 *.png
 *.conf
 *.json
+*.html
 paper
