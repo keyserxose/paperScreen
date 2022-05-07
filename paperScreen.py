@@ -80,7 +80,6 @@ def getJson():
 
 getJson()
 
-#print('This is the date from the API: '+jsonData[0]['prediccion']['dia'][0]['fecha'])
 
 def generateJSONFile():
     with open('weatherdata.json', 'w') as outfile:
