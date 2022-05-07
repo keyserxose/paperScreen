@@ -90,26 +90,16 @@ generateJSONFile()
 
 # WE NEED TO ITERATE THROUGH THE DAY, WE CANNOT HARDCODE THE VALUE, OTHERWISE IT WILL FAIL DURING THE MORNING
 def getToday():
-    global jsonToday
-    jsonToday = jsonData[0]['prediccion']['dia'][1]
-    print(jsonToday['fecha'])
-
-#getToday()
-
-
-def getTodayTest():
     for i in range(len(jsonData[0]['prediccion']['dia'])):
         jsonDataModified = jsonData[0]['prediccion']['dia'][i]['fecha']
-        #print(jsonDataModified)
         jsonDataModifiedNew = re.search(r'\d{4}-\d{2}-\d{2}', jsonDataModified)
         date = datetime.strptime(jsonDataModifiedNew.group(), '%Y-%m-%d').date()
-        #print(date)
         if str(date) == currentDate:
             global jsonToday
             jsonToday = jsonData[0]['prediccion']['dia'][i]
             print('API Date: '+jsonToday['fecha'])
 
-getTodayTest()
+getToday()
 
 def getWeatherDesc(time):
     global myTime
