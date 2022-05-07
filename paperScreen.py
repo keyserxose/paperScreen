@@ -105,13 +105,11 @@ def getWeatherDesc(time):
     myTime = time
     convertTime()
     for i in range(len(jsonToday['estadoCielo'])):
-        #print(jsonToday['estadoCielo'][i]['periodo'])
         if jsonToday['estadoCielo'][i]['periodo'] == newTimeConverted:
             print('API Time: '+hourStr)
             global weatherDesc
             weatherDesc = jsonToday['estadoCielo'][i]['descripcion']
             print('The weather is: '+weatherDesc)
-            #print(weatherDesc)
 
 getWeatherDesc(1)
 
