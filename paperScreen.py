@@ -8,6 +8,7 @@ from datetime import date
 from datetime import datetime
 import configparser
 import imgkit
+import re
 hti = Html2Image(custom_flags=['--quiet'])
 
 # Reading from the current path
@@ -24,36 +25,35 @@ apiKey = config['DEFAULT']['ApiKey']
 # This gets the system time
 def getTime():
     now = datetime.now()
+    global currentDate
+    currentDate = now.strftime("%Y-%m-%d")
+    print('Current Date: '+currentDate)
     global hour
     hour = now.hour
-    print(hour)
     global hourStr
     hourStr = str(hour)
     global currentTimeHour
     currentTimeHour = now.strftime("%H")
-    print(currentTimeHour)
     global currentTime
     currentTime = now.strftime("%H:%M")
     print('Current Time: '+currentTime)
-    print('This is the system hour: '+hourStr)
 
 
 getTime()
 
-#hour = 10
 
-#time = 0
-
+# This we don't need
 def convertTime():
     if 0 <= hour <= 9:
-        time = 0
-        newTime = time+hour
+        newTime = myTime+hour
         global newTimeConverted
         newTimeConverted = '0'+str(newTime)
         print('Its a single digit hour')
         print('This is newtime: '+newTimeConverted)
     else:
-        newTime = time+hour
+        print(myTime)
+        newTime = myTime+hour
+        print(newTime)
         newTimeConverted = str(newTime)
         print('Its a double digit hour')
         print('This is newtime: '+newTimeConverted)
@@ -80,7 +80,7 @@ def getJson():
 
 getJson()
 
-print('This is the date from the API: '+jsonData[0]['prediccion']['dia'][1]['fecha'])
+#print('This is the date from the API: '+jsonData[0]['prediccion']['dia'][0]['fecha'])
 
 def generateJSONFile():
     with open('weatherdata.json', 'w') as outfile:
@@ -88,28 +88,43 @@ def generateJSONFile():
 
 generateJSONFile()
 
+# WE NEED TO ITERATE THROUGH THE DAY, WE CANNOT HARDCODE THE VALUE, OTHERWISE IT WILL FAIL DURING THE MORNING
 def getToday():
     global jsonToday
     jsonToday = jsonData[0]['prediccion']['dia'][1]
     print(jsonToday['fecha'])
 
-getToday()
+#getToday()
 
-#print(jsonToday['estadoCielo'][0]['descripcion'])
 
+def getTodayTest():
+    for i in range(len(jsonData[0]['prediccion']['dia'])):
+        jsonDataModified = jsonData[0]['prediccion']['dia'][i]['fecha']
+        #print(jsonDataModified)
+        jsonDataModifiedNew = re.search(r'\d{4}-\d{2}-\d{2}', jsonDataModified)
+        date = datetime.strptime(jsonDataModifiedNew.group(), '%Y-%m-%d').date()
+        #print(date)
+        if str(date) == currentDate:
+            global jsonToday
+            jsonToday = jsonData[0]['prediccion']['dia'][i]
+            print('API Date: '+jsonToday['fecha'])
+
+getTodayTest()
 
 def getWeatherDesc(time):
+    global myTime
+    myTime = time
     convertTime()
     for i in range(len(jsonToday['estadoCielo'])):
         #print(jsonToday['estadoCielo'][i]['periodo'])
         if jsonToday['estadoCielo'][i]['periodo'] == newTimeConverted:
-            print('The API time is: '+hourStr)
+            print('API Time: '+hourStr)
             global weatherDesc
             weatherDesc = jsonToday['estadoCielo'][i]['descripcion']
             print('The weather is: '+weatherDesc)
             #print(weatherDesc)
 
-getWeatherDesc(0)
+getWeatherDesc(1)
 
 
 def getTemp():
