@@ -242,6 +242,7 @@ def generateHtmlSimple():
 generateHtmlSimple()
 
 def folderPermissions():
+    os.system('cp style.css paper/')
     os.system('chmod -R 777 paper')
     os.system('cp -p -R paper /srv/http/')
 

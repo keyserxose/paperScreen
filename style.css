@@ -1,25 +1,56 @@
 body{
 
     background-color: #ffffff;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+#icon {
+
+    margin-top: 20px;
+    margin-left: 10px;
+    
 }
 
 #temp{
 
-    font-size: 5em;
-    margin-left: 20px;
-    padding-top: 20px;
+    position:fixed;
+    font-size: 4em;
+    margin-top: 15px;
+    margin-left: 15px;
+
+}
+
+#time{
+
+    position:fixed;
+    font-size: 3em;
+    margin-top: 12px;
+    margin-left: 375px;
 
 }
 
 
 #left{
 
-    margin-left: 10px;
+    margin-top: 20px;
+    margin-left: 30px;
 }
 
 #report-date{
 
+    font-size: 2em;
     position: fixed;
     margin-top: 5px;
-    padding-left: 160px;
+    margin-left: 20px;
+}
+
+#text{
+
+
+    font-size:30px;
+}
+
+a{
+
+    font-family: 'Source Sans Pro', sans-serif;
 }
