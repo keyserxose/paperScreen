@@ -65,7 +65,7 @@ def convertTime():
 # Madrid - 28079
 
 def getJson():
-    url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/28079/"
+    url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/27902/"
     querystring = {"api_key":apiKey}
     headers = {'cache-control': "no-cache"}
     response = requests.request("GET", url, headers=headers, params=querystring)
@@ -145,9 +145,9 @@ def showIcon():
         weatherIcon = 'thunderstorm.png'
     elif weatherDesc == 'Cubierto con lluvia escasa' or weatherDesc == 'Nuboso con lluvia escasa' or weatherDesc == 'Intervalos nubosos con lluvia escasa':
         weatherIcon = 'rain.png'
-    elif weatherDesc == 'Nubes altas' or weatherDesc == 'Cubierto' or weatherDesc == 'Muy nuboso' or weatherDesc == 'Nuboso':
+    elif weatherDesc == 'Cubierto' or weatherDesc == 'Muy nuboso' or weatherDesc == 'Nuboso':
         weatherIcon = 'cloud.png'
-    elif weatherDesc == 'Poco nuboso' or weatherDesc == 'Intervalos nubosos':
+    elif weatherDesc == 'Poco nuboso' or weatherDesc == 'Intervalos nubosos' or weatherDesc == 'Nubes altas':
         if 6 <= hour <= 21:
             weatherIcon = 'cloudy.png'
         else:
