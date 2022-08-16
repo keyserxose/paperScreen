@@ -63,6 +63,7 @@ def convertTime():
 # City Codes
 # A Coruña - 15030
 # Madrid - 28079
+# Burela - 27902
 
 def getJson():
     url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/27902/"
