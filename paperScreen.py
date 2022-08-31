@@ -4,6 +4,7 @@ import os
 from html2image import Html2Image
 import json
 import requests
+import time
 from datetime import date
 from datetime import datetime
 import configparser
@@ -134,17 +135,19 @@ def getSunriseSunset():
 
 getSunriseSunset()
 
+# Why is this repeated?
 def generateJSONFile():
     with open('weatherdata.json', 'w') as outfile:
         json.dump(jsonData, outfile, indent=2)
 
-generateJSONFile()
+#generateJSONFile()
 
 def showIcon():
     global weatherIcon
-    if weatherDesc == 'Cubierto con tormenta y lluvia escasa' or weatherDesc == 'Muy nuboso con tormenta y lluvia escasa':
+    #if weatherDesc == 'Cubierto con tormenta y lluvia escasa' or weatherDesc == 'Muy nuboso con tormenta y lluvia escasa' or weatherDesc == 'Muy nuboso con tormenta':
+    if 'tormenta' in weatherDesc:
         weatherIcon = 'thunderstorm.png'
-    elif weatherDesc == 'Cubierto con lluvia escasa' or weatherDesc == 'Nuboso con lluvia escasa' or weatherDesc == 'Intervalos nubosos con lluvia escasa':
+    elif weatherDesc == 'Cubierto con lluvia escasa' or weatherDesc == 'Nuboso con lluvia escasa' or weatherDesc == 'Intervalos nubosos con lluvia escasa' or weatherDesc == 'Muy nuboso con lluvia escasa':
         weatherIcon = 'rain.png'
     elif weatherDesc == 'Cubierto' or weatherDesc == 'Muy nuboso' or weatherDesc == 'Nuboso':
         weatherIcon = 'cloud.png'
