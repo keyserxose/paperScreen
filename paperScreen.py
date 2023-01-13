@@ -147,10 +147,14 @@ def showIcon():
     #if weatherDesc == 'Cubierto con tormenta y lluvia escasa' or weatherDesc == 'Muy nuboso con tormenta y lluvia escasa' or weatherDesc == 'Muy nuboso con tormenta':
     if 'tormenta' in weatherDesc:
         weatherIcon = 'thunderstorm.png'
-    elif weatherDesc == 'Cubierto con lluvia escasa' or weatherDesc == 'Nuboso con lluvia escasa' or weatherDesc == 'Intervalos nubosos con lluvia escasa' or weatherDesc == 'Muy nuboso con lluvia escasa':
+    elif weatherDesc == 'Cubierto con lluvia escasa' or weatherDesc == 'Nuboso con lluvia escasa' or weatherDesc == 'Muy nuboso con lluvia escasa':
         weatherIcon = 'rain.png'
+    elif weatherDesc == 'Intervalos nubosos con lluvia escasa':
+        weatherIcon = 'rainy.png'
     elif weatherDesc == 'Cubierto' or weatherDesc == 'Muy nuboso' or weatherDesc == 'Nuboso':
         weatherIcon = 'cloud.png'
+    elif weatherDesc == 'Niebla':
+        weatherIcon = 'haze.png'
     elif weatherDesc == 'Poco nuboso' or weatherDesc == 'Intervalos nubosos' or weatherDesc == 'Nubes altas':
         if 6 <= hour <= 21:
             weatherIcon = 'cloudy.png'
