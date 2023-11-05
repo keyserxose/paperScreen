@@ -133,3 +133,5 @@ dmypy.json
 *.json
 *.html
 paper
+*.odt
+aemet_api
