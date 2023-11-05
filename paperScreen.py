@@ -63,11 +63,11 @@ def convertTime():
 
 # City Codes
 # A Coruña - 15030
-# Madrid - 28079
 # Burela - 27902
+# Lugo = 27028
 
 def getJson():
-    url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/27902/"
+    url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/27028/"
     querystring = {"api_key":apiKey}
     headers = {'cache-control': "no-cache"}
     response = requests.request("GET", url, headers=headers, params=querystring)
@@ -258,7 +258,9 @@ folderPermissions()
 
 def screenshot():
     hti.screenshot(url='http://localhost:8080/paper/index.html', save_as='status.png', size=(600, 800))
-    os.system('convert status.png -type GrayScale -depth 8 -colors 256  -rotate 180 status.png')
+    # Enable this one if the kindle is upside down
+    #os.system('convert status.png -type GrayScale -depth 8 -colors 256 -rotate 180 status.png')
+    os.system('convert status.png -type GrayScale -depth 8 -colors 256 status.png')
     os.system('chmod 777 status.png')
     os.system('cp -p status.png /srv/http/status.png')
 
