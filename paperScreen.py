@@ -257,7 +257,10 @@ def folderPermissions():
 folderPermissions()
 
 def screenshot():
-    hti.screenshot(url='http://localhost:8080/paper/index.html', save_as='status.png', size=(600, 800))
+    # Vertical
+    #hti.screenshot(url='http://localhost:8080/paper/index.html', save_as='status.png', size=(600, 800))
+    # Horizontal
+    hti.screenshot(url='http://localhost:8080/paper/index.html', save_as='status.png', size=(800, 600))
     # Enable this one if the kindle is upside down
     #os.system('convert status.png -type GrayScale -depth 8 -colors 256 -rotate 180 status.png')
     os.system('convert status.png -type GrayScale -depth 8 -colors 256 status.png')
